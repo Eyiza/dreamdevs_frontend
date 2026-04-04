@@ -362,3 +362,55 @@
     background-color: white;
     /* padding: 15px; */
 }
+
+.benefits{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 100px;
+}
+
+.benefit {
+    flex: 0.4;
+}
+
+.benefit h1{
+    font-size: 45px;
+    font-weight: 700;
+    font-style: bold;
+    margin-bottom: 50px;
+}
+
+.benefit-list{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.benefit-item{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.benefit-item p{
+    font-size: 15px;
+    line-height: 30px;
+    font-weight: 500;
+    font-style: medium;
+}
+
+.benefit-image{
+    flex: 0.5;
+    /* margin-right: -90px; */
+    /* width: 500px;
+    height: 560px; */
+}
+
+.benefit-image img{
+    /* width: 500px;
+    height: 500px; */
+    width: 100%;
+    height: auto;
+
+}
