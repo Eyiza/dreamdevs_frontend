@@ -1,7 +1,7 @@
 const taskList = document.querySelector("#task-list ul")
 
 taskList.addEventListener("click", (event)=>{
-    console.log(event)
+    //console.log(event)
     if (event.target.className === "delete"){
         const li = event.target.parentNode
         li.remove()
@@ -10,7 +10,7 @@ taskList.addEventListener("click", (event)=>{
 
 const searchInput = document.querySelector("#search-tasks input")
 searchInput.addEventListener("input", (event)=>{
-    console.log(event.target.value)
+    // console.log(event.target.value)
     const searchTerm = event.target.value.toLowerCase()
     const tasks = taskList.getElementsByTagName("li")
     // console.log(tasks)
