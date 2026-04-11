@@ -14,6 +14,10 @@ inputNumber.addEventListener("click", (event) => {
         && !event.target.classList.contains("equals")) {
         inputDigit(event.target.textContent);
     }
+
+    if (event.target.classList.contains("clear")) {
+        clearDisplay();
+    }
 })
 
 function inputDigit(digit) {
@@ -22,5 +26,10 @@ function inputDigit(digit) {
     } else {
         current += digit;
     }
+    updateDisplay();
+}
+
+function clearDisplay() {
+    current = '0';
     updateDisplay();
 }
