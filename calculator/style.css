@@ -41,6 +41,7 @@ body {
     font-size: 32px;
     font-weight: bold;
     color: black;
+    word-break: break-all;
 }
 
 .cal-buttons {
