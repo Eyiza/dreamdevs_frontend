@@ -1,8 +1,11 @@
-let current = '0';
+let currentInput = '0';
+let previousInput;
+
 const currentElement = document.getElementById('current');
+const historyElement = document.getElementById('history');
 
 function updateDisplay() {
-    currentElement.textContent = current;
+    currentElement.textContent = currentInput;
 }
 
 const inputNumber = document.querySelector(".cal-buttons")
@@ -15,21 +18,42 @@ inputNumber.addEventListener("click", (event) => {
         inputDigit(event.target.textContent);
     }
 
-    if (event.target.classList.contains("clear")) {
+    if (event.target.classList.contains("clear") && event.target.textContent === "CE") {
+        clearCurrent();
+    }
+
+    if (event.target.classList.contains("clear") && event.target.textContent === "C") {
         clearDisplay();
+    }
+
+    if (event.target.classList.contains("operator")) {
+        // console.log(event)
+        inputOperator(event.target.textContent);
     }
 })
 
 function inputDigit(digit) {
-    if (current === '0') {
-        current = digit;
+    if (currentInput === '0') {
+        currentInput = digit;
     } else {
-        current += digit;
+        currentInput += digit;
     }
     updateDisplay();
 }
 
-function clearDisplay() {
-    current = '0';
+function clearCurrent() {
+    currentInput = '0';
     updateDisplay();
+}
+
+
+function clearDisplay() {
+   clearCurrent();
+    historyElement.textContent = '';
+}
+
+
+function inputOperator(operator) {
+    previousInput = currentInput; 
+    historyElement.textContent = previousInput + ' ' + operator;
 }
