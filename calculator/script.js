@@ -1,5 +1,6 @@
 let currentInput = '0';
 let previousInput;
+let operator;
 
 const currentElement = document.getElementById('current');
 const historyElement = document.getElementById('history');
@@ -30,6 +31,11 @@ inputNumber.addEventListener("click", (event) => {
         // console.log(event)
         inputOperator(event.target.textContent);
     }
+
+    if (event.target.classList.contains("equals")) {
+        // console.log(event)
+        calculate();
+    }
 })
 
 function inputDigit(digit) {
@@ -49,11 +55,45 @@ function clearCurrent() {
 
 function clearDisplay() {
    clearCurrent();
-    historyElement.textContent = '';
+   operator = null;
+   previousInput = null;
+   historyElement.textContent = '';
 }
 
 
-function inputOperator(operator) {
+function inputOperator(op) {
+    operator = op;
     previousInput = currentInput; 
+    currentInput = '0';
     historyElement.textContent = previousInput + ' ' + operator;
+}
+
+function calculate() {
+    if (!operator) return;
+    // console.log(historyElement.textContent);
+    const num1 = parseFloat(previousInput);
+    const num2 = parseFloat(currentInput);
+    let result;
+
+    switch (operator) {
+        case '+':
+            result = num1 + num2;
+            break;
+        case '-':
+            result = num1 - num2;
+            break;
+        case 'x':
+            result = num1 * num2;
+            break;
+        case '÷':
+            result = (num2 === 0) ? 'Cannot divide by zero' : num1 / num2;
+            break;
+        default:
+            return;
+    }
+    historyElement.textContent = `${previousInput} ${operator} ${currentInput} =`;
+    currentInput = result.toString();
+    operator = null;
+
+    updateDisplay();
 }
