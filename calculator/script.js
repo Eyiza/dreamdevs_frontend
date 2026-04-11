@@ -1,6 +1,8 @@
 let currentInput = '0';
 let previousInput;
 let operator;
+let shouldResetScreen = false;
+let lastKeyWasOperator = false;
 
 const currentElement = document.getElementById('current');
 const historyElement = document.getElementById('history');
@@ -12,6 +14,8 @@ function updateDisplay() {
 const inputNumber = document.querySelector(".cal-buttons")
 inputNumber.addEventListener("click", (event) => {
     // console.log(event)
+    if (!event.target.classList.contains("button")) return;
+
     if (event.target.textContent === "+/-") {
         currentInput = (parseFloat(currentInput) * -1).toString();
         updateDisplay();
@@ -54,11 +58,15 @@ inputNumber.addEventListener("click", (event) => {
 function inputDigit(digit) {
     if (digit === '.' && currentInput.includes('.')) return;
 
-    if (currentInput === '0') {
-        currentInput = digit;
+    if (shouldResetScreen) {
+        currentInput = (digit === '.') ? '0.' : digit;
+        previousInput = null;
+        historyElement.textContent = '';
+        shouldResetScreen = false;
     } else {
-        currentInput += digit;
+        currentInput = (currentInput === '0') ? digit : currentInput + digit;
     }
+    lastKeyWasOperator = false;
     updateDisplay();
 }
 
@@ -69,25 +77,34 @@ function clearCurrent() {
 
 
 function clearDisplay() {
-   clearCurrent();
-   operator = null;
+   currentInput = '0';
    previousInput = null;
+   operator = null;
    historyElement.textContent = '';
    updateDisplay();
 }
 
 
 function inputOperator(op) {
+    if ((operator && currentInput === '0') || (operator && lastKeyWasOperator)) {
+        operator = op;
+        historyElement.textContent = previousInput + ' ' + operator;
+        return;
+    }
+    
     if (operator) calculate();
     operator = op;
     previousInput = currentInput; 
     currentInput = '0';
     historyElement.textContent = previousInput + ' ' + operator;
+    shouldResetScreen = false; 
+    lastKeyWasOperator = true;
 }
 
 function calculate() {
-    if (!operator) return;
     // console.log(historyElement.textContent);
+    if (!operator) return;
+    if (isNaN(previousInput) || isNaN(currentInput)) return;
     const num1 = parseFloat(previousInput);
     const num2 = parseFloat(currentInput);
     let result;
@@ -103,21 +120,32 @@ function calculate() {
             result = num1 * num2;
             break;
         case '÷':
-            result = (num2 === 0) ? 'Cannot divide by zero' : num1 / num2;
+            if (num2 === 0) {
+                currentInput = 'Cannot divide by zero';
+                updateDisplay();
+                shouldResetScreen = true;
+                return;
+            }
+            result = num1 / num2;
             break;
+            // result = (num2 === 0) ? 'Cannot divide by zero' : num1 / num2;
+            // break;
         default:
             return;
     }
     historyElement.textContent = `${previousInput} ${operator} ${currentInput} =`;
     currentInput = result.toString();
+    previousInput = currentInput;
     operator = null;
-
+    shouldResetScreen = true;
     updateDisplay();
 }
 
 function calculatePercentage() {
-    currentInput = String(parseFloat(currentInput) / 100);
-    previousInput = currentInput;
-    historyElement.textContent = previousInput;
+    if (!previousInput) {
+        currentInput = String(parseFloat(currentInput) / 100);
+    } else {
+        currentInput = String((parseFloat(previousInput) * parseFloat(currentInput)) / 100);
+    }
     updateDisplay();
 }
