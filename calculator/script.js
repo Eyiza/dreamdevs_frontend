@@ -12,12 +12,20 @@ function updateDisplay() {
 const inputNumber = document.querySelector(".cal-buttons")
 inputNumber.addEventListener("click", (event) => {
     // console.log(event)
+    if (event.target.textContent === "+/-") {
+        currentInput = (parseFloat(currentInput) * -1).toString();
+        updateDisplay();
+    }
+
     if (event.target.classList.contains("button") 
         && !event.target.classList.contains("clear") 
         && !event.target.classList.contains("operator") 
-        && !event.target.classList.contains("equals")) {
+        && !event.target.classList.contains("equals")
+        && !(event.target.textContent === "+/-")
+    ) {
         inputDigit(event.target.textContent);
     }
+
 
     if (event.target.classList.contains("clear") && event.target.textContent === "CE") {
         clearCurrent();
@@ -36,9 +44,13 @@ inputNumber.addEventListener("click", (event) => {
         // console.log(event)
         calculate();
     }
+
+    
 })
 
 function inputDigit(digit) {
+    if (digit === '.' && currentInput.includes('.')) return;
+    
     if (currentInput === '0') {
         currentInput = digit;
     } else {
