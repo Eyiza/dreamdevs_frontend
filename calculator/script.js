@@ -18,7 +18,7 @@ inputNumber.addEventListener("click", (event) => {
     }
 
     if (event.target.textContent === "%") {
-        calculatePercentage();
+        return calculatePercentage();
     }
 
     if (event.target.classList.contains("button") 
@@ -49,8 +49,6 @@ inputNumber.addEventListener("click", (event) => {
         // console.log(event)
         calculate();
     }
-
-    
 })
 
 function inputDigit(digit) {
@@ -80,6 +78,7 @@ function clearDisplay() {
 
 
 function inputOperator(op) {
+    if (operator) calculate();
     operator = op;
     previousInput = currentInput; 
     currentInput = '0';
@@ -118,5 +117,7 @@ function calculate() {
 
 function calculatePercentage() {
     currentInput = String(parseFloat(currentInput) / 100);
+    previousInput = currentInput;
+    historyElement.textContent = previousInput;
     updateDisplay();
 }
