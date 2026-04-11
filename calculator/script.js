@@ -17,11 +17,16 @@ inputNumber.addEventListener("click", (event) => {
         updateDisplay();
     }
 
+    if (event.target.textContent === "%") {
+        calculatePercentage();
+    }
+
     if (event.target.classList.contains("button") 
         && !event.target.classList.contains("clear") 
         && !event.target.classList.contains("operator") 
         && !event.target.classList.contains("equals")
         && !(event.target.textContent === "+/-")
+        && !(event.target.textContent === "%")
     ) {
         inputDigit(event.target.textContent);
     }
@@ -50,7 +55,7 @@ inputNumber.addEventListener("click", (event) => {
 
 function inputDigit(digit) {
     if (digit === '.' && currentInput.includes('.')) return;
-    
+
     if (currentInput === '0') {
         currentInput = digit;
     } else {
@@ -70,6 +75,7 @@ function clearDisplay() {
    operator = null;
    previousInput = null;
    historyElement.textContent = '';
+   updateDisplay();
 }
 
 
@@ -107,5 +113,10 @@ function calculate() {
     currentInput = result.toString();
     operator = null;
 
+    updateDisplay();
+}
+
+function calculatePercentage() {
+    currentInput = String(parseFloat(currentInput) / 100);
     updateDisplay();
 }
