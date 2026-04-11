@@ -63,3 +63,31 @@ body {
 .button:hover { 
     background: #e2e2e2; 
 }
+
+.button.operator {
+    background: #dceeff;
+    color: #1a5fa8;
+    border-color: #b0d0f5;
+}
+
+.button.operator:hover { 
+    background: #c2ddf7; 
+}
+
+.button.equals {
+    background: #1a5fa8;
+    color: #ffffff;
+    border-color: #1a5fa8;
+}
+.button.equals:hover { 
+    background: #164e8c; 
+}
+
+.button.clear {
+    background: #ffe5e5;
+    color: #a32d2d;
+    border-color: #f5b8b8;
+}
+.button.clear:hover { 
+    background: #f7c1c1; 
+}
