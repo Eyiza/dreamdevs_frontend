@@ -57,7 +57,11 @@ inputNumber.addEventListener("click", (event) => {
 
 function inputDigit(digit) {
     if (digit === '.' && currentInput.includes('.')) return;
-
+    if (digit === '.' && currentInput === '0') {
+        currentInput = '0.';
+        updateDisplay();
+        return;
+    }
     if (shouldResetScreen) {
         currentInput = (digit === '.') ? '0.' : digit;
         previousInput = null;
@@ -67,6 +71,12 @@ function inputDigit(digit) {
         currentInput = (currentInput === '0') ? digit : currentInput + digit;
     }
     lastKeyWasOperator = false;
+    updateDisplay();
+}
+
+function backspace() {
+    if (shouldResetScreen) return;
+    currentInput = (currentInput.length > 1) ? currentInput.slice(0, -1) : '0';
     updateDisplay();
 }
 
@@ -134,7 +144,7 @@ function calculate() {
             return;
     }
     historyElement.textContent = `${previousInput} ${operator} ${currentInput} =`;
-    currentInput = result.toString();
+    currentInput = parseFloat(result.toPrecision(10)).toString();
     previousInput = currentInput;
     operator = null;
     shouldResetScreen = true;
@@ -143,9 +153,21 @@ function calculate() {
 
 function calculatePercentage() {
     if (!previousInput) {
-        currentInput = String(parseFloat(currentInput) / 100);
+        currentInput = String(parseFloat((parseFloat(currentInput) / 100).toPrecision(10)));
     } else {
-        currentInput = String((parseFloat(previousInput) * parseFloat(currentInput)) / 100);
+        currentInput = String(parseFloat((parseFloat(previousInput) * parseFloat(currentInput) / 100).toPrecision(10)));
     }
     updateDisplay();
 }
+
+document.addEventListener('keydown', (e) => {
+    if ('0123456789'.includes(e.key)) inputDigit(e.key);
+    else if (e.key === '.') inputDigit('.');
+    else if (e.key === '+') inputOperator('+');
+    else if (e.key === '-') inputOperator('-');
+    else if (e.key === '*') inputOperator('x');
+    else if (e.key === '/') inputOperator('÷');
+    else if (e.key === 'Enter' || e.key === '=') calculate();
+    else if (e.key === 'Backspace') backspace();
+    else if (e.key === '%') calculatePercentage();
+});
