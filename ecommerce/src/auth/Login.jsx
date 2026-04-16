@@ -7,11 +7,11 @@ const Login = () => {
         password: ""
     }
 
-    const [user, setUser] = useState(userDetails);
+    const [userProfile, setUserProfile] = useState(userDetails);
 
     function handleChange(e) {
         const {name, value} = e.target;
-        setUser({...user, [name]: value});
+        setUserProfile((prev) => ({...prev, [name]: value}));
     }
   return (
     <div className='bg-blue-100 flex flex-col items-center justify-center min-h-screen'>
