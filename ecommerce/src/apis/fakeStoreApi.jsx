@@ -12,16 +12,20 @@ export const fakeStoreApi = createApi({
     }),
 
     // The "endpoints" represent operations and requests for this server.
-    endpoints: (builder) => ({
-        login: builder.mutation({
+    endpoints: (build) => ({
+        login: build.mutation({
             query: (body) => ({
                 url: "/auth/login",
                 method: "POST",
                 body
             })
         }),
+        getAllProducts: build.query({
+            query: () => "/products"
+        })
+
     })
 });
 
 // The name useLoginMutation is generated based on the name of the endpoint, "login", and the type of operation, "mutation".
-export const { useLoginMutation } = fakeStoreApi;
+export const { useLoginMutation, useGetAllProductsQuery } = fakeStoreApi;
