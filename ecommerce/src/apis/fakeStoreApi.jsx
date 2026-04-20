@@ -22,10 +22,12 @@ export const fakeStoreApi = createApi({
         }),
         getAllProducts: build.query({
             query: () => "/products"
+        }),
+        getProductById: build.query({
+            query: (id) => `/products/${id}`
         })
-
     })
 });
 
 // The name useLoginMutation is generated based on the name of the endpoint, "login", and the type of operation, "mutation".
-export const { useLoginMutation, useGetAllProductsQuery } = fakeStoreApi;
+export const { useLoginMutation, useGetAllProductsQuery, useGetProductByIdQuery } = fakeStoreApi;
