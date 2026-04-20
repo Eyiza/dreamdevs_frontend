@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router";
 import Login from "../auth/Login";
-import Product from "../components/products/Product";
+import Products from "../components/products/Products";
 
 const router = createBrowserRouter([
     {
@@ -9,7 +9,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/products",
-        element: <Product />
+        element: <Products />
     },
 ])
 
