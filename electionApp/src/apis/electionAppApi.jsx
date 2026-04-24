@@ -15,13 +15,13 @@ export const electionAppApi = createApi({
         }),
         createElection: build.mutation({
             query: (body) => ({
-                url: "/elections",
+                url: "/election",
                 method: "POST",
                 body
             })
         }),
         getElectionById: build.query({
-            query: (id) => `/elections/${id}`
+            query: (id) => `/election/${id}`
         }),
         // Positions
         createPosition: build.mutation({
@@ -29,13 +29,19 @@ export const electionAppApi = createApi({
                 url: "/position",
                 method: "POST",
                 body
-            })
+            }),
+            invalidatesTags: (result, error, body) => [
+                { type: "Positions", id: body.electionId }
+            ]
         }),
         getPositionById: build.query({
             query: (id) => `/position/${id}`
         }),
         getPositionsByElectionId: build.query({
-            query: (electionId) => `/election/${electionId}/positions`
+            query: (electionId) => `/election/${electionId}/positions`,
+            providesTags: (result, error, id) => [
+                { type: "Positions", id },
+            ],
         }),
         // Candidates
         createCandidate: build.mutation({
@@ -61,7 +67,7 @@ export const electionAppApi = createApi({
             query: () => "/results"
         }),
         getResultByPosition: build.query({
-            query: (position) => `/results/${positionId}`
+            query: (positionId) => `/results/${positionId}`
         }),
         // Voters
         createVoter: build.mutation({
@@ -87,7 +93,6 @@ export const electionAppApi = createApi({
     })
 });
 
-// The name useCreateElectionMutation is generated based on the name of the endpoint, "createElection", and the type of operation, "mutation".
 export const { 
     useGetElectionsQuery, useCreateElectionMutation, useGetElectionByIdQuery,
     useCreatePositionMutation, useGetPositionByIdQuery, useGetPositionsByElectionIdQuery,

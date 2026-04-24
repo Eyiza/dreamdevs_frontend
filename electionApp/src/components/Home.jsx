@@ -8,15 +8,15 @@ const Home = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error(error?.data?.message || 'Failed to fetch elections.');
+      toast.error(error?.data?.data || 'Failed to fetch elections.');
     }
   }, [isError, error]);
 
   const elections = data?.data || [];
 
-  const ongoingCount = elections.filter((e) => e.status === 'ONGOING').length;
-  const upcomingCount = elections.filter((e) => e.status === 'UPCOMING').length;
-  const endedCount = elections.filter((e) => e.status === 'ENDED').length;
+  const ongoingCount = elections.filter((data) => data.status === 'ONGOING').length;
+  const upcomingCount = elections.filter((data) => data.status === 'UPCOMING').length;
+  const endedCount = elections.filter((data) => data.status === 'ENDED').length;
 
   if (isLoading) {
     return (
