@@ -112,6 +112,9 @@ const Home = () => {
                   </div>
 
                   <div className="mt-4 flex gap-3">
+                    <Link to={`/election/${election.id}`} className="text-sm font-medium text-blue-600 hover:underline">
+                      View
+                    </Link>
                     <Link to={`/elections/${election.id}/vote`} className="text-sm font-medium text-blue-600 hover:underline">
                       Vote
                     </Link>

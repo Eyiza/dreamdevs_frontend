@@ -300,7 +300,7 @@ export default function ElectionDetail() {
                   </div>
 
                   <Link
-                    to={`/election/${id}/positions/${position.id}/candidates`}
+                    to={`/election/${id}/candidates?position=${position.id}`}
                     className="whitespace-nowrap text-sm font-semibold text-blue-700 no-underline"
                   >
                     Manage Candidates

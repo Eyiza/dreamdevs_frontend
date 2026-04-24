@@ -49,10 +49,16 @@ export const electionAppApi = createApi({
                 url: "/candidate",
                 method: "POST",
                 body
-            })
+            }),
+            invalidatesTags: (result, error, body) => [
+                { type: "Candidates", id: body.electionId }
+            ]
         }),
         getCandidates: build.query({
-            query: (electionId) => `/election/${electionId}/candidates`
+            query: (electionId) => `/election/${electionId}/candidates`,
+            providesTags: (result, error, id) => [
+                { type: "Candidates", id },
+            ],
         }),
         getCandidateById: build.query({
             query: (id) => `/candidate/${id}`
