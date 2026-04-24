@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router";
 import Home from "../components/Home";
 import CreateElection from "../components/CreateElection";
 import ElectionDetail from "../components/ElectionDetail";
+import RegisterVoter from "../components/RegisterVoter";
 
 const router = createBrowserRouter([
     {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
     {
         path: "/election/:id",
         element: <ElectionDetail />
+    },
+    {
+        path: "/register",
+        element: <RegisterVoter />
     }
 ])
 
