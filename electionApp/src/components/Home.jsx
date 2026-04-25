@@ -115,10 +115,10 @@ const Home = () => {
                     <Link to={`/election/${election.id}`} className="text-sm font-medium text-blue-600 hover:underline">
                       View
                     </Link>
-                    <Link to={`/election/${election.id}/vote`} className="text-sm font-medium text-blue-600 hover:underline">
+                    <Link to={`/election/${election.id}/vote`} className="text-sm font-medium text-indigo-600 hover:underline">
                       Vote
                     </Link>
-                    <Link to={`/election/${election.id}/results`} className="text-sm font-medium text-indigo-600 hover:underline">
+                    <Link to={`/election/${election.id}/results`} className="text-sm font-medium text-emerald-700 hover:underline">
                       View Results
                     </Link>
                   </div>

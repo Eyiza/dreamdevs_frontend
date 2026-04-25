@@ -4,15 +4,20 @@ const BASE_URL = import.meta.env.VITE_APP_BASE_URL || "http://localhost:8080";
 
 export const electionAppApi = createApi({
     reducerPath: "electionAppApi",
+
     baseQuery: fetchBaseQuery({
         baseUrl: BASE_URL
     }),
+
+    tagTypes: ["Elections", "Positions", "Candidates", "Voters", "Results"],
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
 
     endpoints: (build) => ({
         // Elections
         getElections: build.query({
             query: () => "/elections",
-            providesTags: ["Elections"]
+            providesTags: ["Elections"] // This will mark the "Elections" tag as provided whenever this query is successful
         }),
         createElection: build.mutation({
             query: (body) => ({
@@ -20,7 +25,7 @@ export const electionAppApi = createApi({
                 method: "POST",
                 body
             }),
-            invalidatesTags: ["Elections"]
+            invalidatesTags: ["Elections"] // This will mark the "Elections" tag as invalidated whenever this mutation is successful, prompting a refetch of any queries that provide this tag (like getElections)
         }),
         getElectionById: build.query({
             query: (id) => `/election/${id}`
@@ -72,10 +77,14 @@ export const electionAppApi = createApi({
             })
         }),
         getResults: build.query({
-            query: () => "/results"
+            query: () => "/results",
+            providesTags: ["Results"]
         }),
         getResultByPosition: build.query({
-            query: (positionId) => `/results/${positionId}`
+            query: (positionId) => `/results/${positionId}`,
+            providesTags: (result, error, id) => [
+                { type: "Results", id },
+            ],
         }),
         // Voters
         createVoter: build.mutation({
@@ -83,10 +92,12 @@ export const electionAppApi = createApi({
                 url: "/voter",
                 method: "POST",
                 body
-            })
+            }),
+            invalidatesTags: ["Voters"]
         }),
         getVoters: build.query({
-            query: () => "/voters"
+            query: () => "/voters",
+            providesTags: ["Voters"]
         }),
         getVoterById: build.query({
             query: (id) => `/voter/${id}`
@@ -96,7 +107,8 @@ export const electionAppApi = createApi({
                 url: "/vote",
                 method: "PATCH",
                 body
-            })
+            }),
+            invalidatesTags: ["Voters", "Results"]
         })
     })
 });

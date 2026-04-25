@@ -50,6 +50,7 @@ export default function Vote() {
   const ongoingElections = elections.filter((e) => e.status === "ONGOING");
   const election = electionData?.data || electionData;
   const allPositions = positionsData?.data || positionsData || [];
+  const totalPositions = allPositions.length;
   const allCandidates = candidatesData?.data || candidatesData || [];
   const allVoters = votersData?.data || votersData || [];
 
@@ -142,28 +143,40 @@ export default function Vote() {
 
       setSelectedCandidateId("");
 
-      const stillRemaining = remainingPositions.filter((p) => p.id !== currentPosition.id);
+      // const stillRemaining = remainingPositions.filter((p) => p.id !== currentPosition.id);
 
-      if (stillRemaining.length > 0) {
-        setPositionIndex(0);
-      } else {
+      // if (stillRemaining.length > 0) {
+      //   setPositionIndex(0);
+      // } else {
+      //   setStep("summary");
+      // }
+      if (positionIndex + 1 >= remainingPositions.length) {
         setStep("summary");
+      } else {
+        setPositionIndex((prev) => prev + 1);
       }
     } catch (error) {
       toast.error(error?.data?.data || "Failed to cast vote.");
     }
   }
 
+  // function handleSkipPosition() {
+  //   if (!currentPosition) {
+  //       setStep("summary");
+  //       return;
+  //   }
+  //   const stillRemaining = remainingPositions.filter((p) => p.id !== currentPosition.id);
+  //   if (stillRemaining.length > 0) {
+  //     setPositionIndex((prev) => prev + 1);
+  //   } else {
+  //     setStep("summary");
+  //   }
+  // }
   function handleSkipPosition() {
-    if (!currentPosition) {
-        setStep("summary");
-        return;
-    }
-    const stillRemaining = remainingPositions.filter((p) => p.id !== currentPosition.id);
-    if (stillRemaining.length > 0) {
-      setPositionIndex((prev) => prev + 1);
-    } else {
+    if (positionIndex + 1 >= remainingPositions.length) {
       setStep("summary");
+    } else {
+      setPositionIndex((prev) => prev + 1);
     }
   }
 
@@ -306,13 +319,13 @@ export default function Vote() {
             {!positionsLoading && remainingPositions.length > 0 && (
               <div className="mb-6">
                 <div className="mb-2 flex items-center justify-between text-xs text-slate-400">
-                  <span>Position {positionIndex + 1} of {remainingPositions.length}</span>
-                  <span>{remainingPositions.length - positionIndex - 1} remaining</span>
+                  <span>Position {sessionVotes.length + 1} of {allPositions.length}</span>
+                  <span>{allPositions.length - sessionVotes.length - 1} remaining</span>
                 </div>
                 <div className="h-1.5 w-full rounded-full bg-slate-200">
                   <div
                     className="h-1.5 rounded-full bg-blue-700 transition-all duration-500"
-                    style={{ width: `${(positionIndex / remainingPositions.length) * 100}%` }}
+                    style={{ width: `${(sessionVotes.length / totalPositions) * 100}%` }}
                   />
                 </div>
               </div>
