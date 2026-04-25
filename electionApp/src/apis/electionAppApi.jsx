@@ -11,14 +11,16 @@ export const electionAppApi = createApi({
     endpoints: (build) => ({
         // Elections
         getElections: build.query({
-            query: () => "/elections"
+            query: () => "/elections",
+            providesTags: ["Elections"]
         }),
         createElection: build.mutation({
             query: (body) => ({
                 url: "/election",
                 method: "POST",
                 body
-            })
+            }),
+            invalidatesTags: ["Elections"]
         }),
         getElectionById: build.query({
             query: (id) => `/election/${id}`

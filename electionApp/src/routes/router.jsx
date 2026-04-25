@@ -4,6 +4,7 @@ import CreateElection from "../components/CreateElection";
 import ElectionDetail from "../components/ElectionDetail";
 import RegisterVoter from "../components/RegisterVoter";
 import Candidates from "../components/Candidates";
+import Vote from "../components/Vote";
 
 const router = createBrowserRouter([
     {
@@ -25,6 +26,14 @@ const router = createBrowserRouter([
     {
         path: "/election/:electionId/candidates", 
         element: <Candidates />
+    },
+    {
+        path: "/vote",
+        element: <Vote />
+    },
+    {
+        path: "/election/:electionId/vote",
+        element: <Vote />
     }
 ])
 
