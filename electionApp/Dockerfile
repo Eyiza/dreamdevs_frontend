@@ -1,22 +1,19 @@
-# Dev only — runs Vite dev server with hot reload
+# Stage 1: Build React app
 ARG NODE_VERSION=24.14.1
-
-################################################################################
-# Use node image for base image for all stages.
-FROM node:${NODE_VERSION}-alpine as base
-
+FROM node:${NODE_VERSION}-alpine AS build
 WORKDIR /app
-
-# Copy package files first for the same caching reason as the backend —
-# node_modules only rebuilds when package.json actually changes
 COPY package*.json ./
 RUN npm install
-
-# Copy the rest of the source
 COPY . .
+# This ARG lets GitHub Actions inject the real backend URL at build time
+ARG VITE_APP_BASE_URL=http://localhost:8080
+RUN echo "VITE_APP_BASE_URL=${VITE_APP_BASE_URL}" > .env.production.local
 
-EXPOSE 5173
+RUN npm run build
 
-# --host makes Vite listen on 0.0.0.0 instead of just localhost,
-# which is required for Docker to forward the port to your machine
-CMD ["npm", "run", "dev", "--", "--host"]
+# Stage 2: Serve with Nginx
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
