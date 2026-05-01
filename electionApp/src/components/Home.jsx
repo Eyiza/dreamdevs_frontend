@@ -43,7 +43,7 @@ const Home = () => {
       <div className="mx-auto max-w-6xl space-y-8">
         <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
           <h1 className="text-2xl font-bold text-slate-800 md:text-3xl">Election Dashboard</h1>
-          <p className="mt-2 text-slate-600">Create and Track elections.</p>
+          <p className="mt-2 text-slate-600">Create and Track elections</p>
         </div>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
